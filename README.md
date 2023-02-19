@@ -1,4 +1,4 @@
-# Billy - Backend API
+# People & Cars React+GraphQL
 
 ## Description
 
