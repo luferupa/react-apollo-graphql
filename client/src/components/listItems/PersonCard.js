@@ -3,10 +3,11 @@ import { EditOutlined } from '@ant-design/icons'
 import RemovePerson from "../buttons/RemovePerson"
 import { useState } from "react"
 import UpdatePerson from "../forms/UpdatePerson"
+import Cars from "../lists/Cars"
 
 const getStyles = () => ({
     card: {
-        width: '500px'
+        width: '900px'
     }
 })
 
@@ -52,6 +53,8 @@ const PersonCard = props => {
                 ]}
                 >
                     {firstName} {lastName}
+
+                    <Cars personId={id} />
                 </Card>
             )}
             
