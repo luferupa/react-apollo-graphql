@@ -111,12 +111,20 @@ const typeDefs = gql`
         personId: String
     }
 
+    type PersonCars {
+      id: String!
+      firstName: String
+      lastName: String
+      cars: [Car]
+  }
+
     type Query {
         person(id: String): Person
         people: [Person]
         cars: [Car]
         car(id: String): Car
         personCars(personId: String): [Car]
+        personWithCars(id: String): PersonCars
     }
 
     type Mutation {
@@ -142,6 +150,13 @@ const resolvers = {
         },
         personCars: (root, args) => {
             return filter(carsArr, { personId: args.personId })
+        },
+        personWithCars: (root, args) => {
+          const personObj = find(peopleArr, { id: args.id })
+          const personCars = filter(carsArr, { personId: args.id })
+          console.log('person',personObj)
+          console.log('cars', personCars)
+          return { ...personObj, cars: personCars }
         }
     },
     Mutation: {

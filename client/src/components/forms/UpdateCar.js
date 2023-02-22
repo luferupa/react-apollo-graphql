@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@apollo/client"
 import { Button, Form, Input, Select } from "antd"
 import filter from "lodash.filter"
 import { useEffect, useState } from "react"
-import { GET_PEOPLE, GET_PERSON_CARS, UPDATE_CAR } from "../../queries"
+import { GET_PEOPLE, GET_PERSON_CARS, GET_PERSON_WITH_CARS, UPDATE_CAR } from "../../queries"
 
 const UpdateCar = props => {
     const [form] = Form.useForm()
@@ -45,6 +45,23 @@ const UpdateCar = props => {
                     }
                 })
 
+                //update the data for the detailed section
+                data = cache.readQuery({query: GET_PERSON_WITH_CARS, variables: { id: personId }})
+                if(data){
+                    cache.writeQuery({
+                    query: GET_PERSON_WITH_CARS,
+                    variables: { id: personId },
+                    data: {
+                        ...data,
+                        personWithCars: {
+                            ...data.personWithCars,
+                            cars: [...data.personWithCars.cars, updateCar]
+                        }
+                        
+                    }
+                    })
+                }
+                
                 //delete the car from the original person section if it changed the owner
                 if(personId!==originalPersonId){
                     data = cache.readQuery({query: GET_PERSON_CARS, variables: { personId: originalPersonId }})
@@ -52,9 +69,27 @@ const UpdateCar = props => {
                         query: GET_PERSON_CARS,
                         variables: { personId: originalPersonId },
                         data: {
+                            ...data,
                             personCars: filter(data.personCars, c => {
                                 return c.id !== updateCar.id
                             })
+                        }
+                    })
+                }
+
+                //delete the car from the detailed person section if it changed the owner
+                if(personId!==originalPersonId){
+                    data = cache.readQuery({query: GET_PERSON_WITH_CARS, variables: { id: originalPersonId }})
+                    cache.writeQuery({
+                        query: GET_PERSON_WITH_CARS,
+                        variables: { id: originalPersonId },
+                        data: {
+                            ...data,
+                            personWithCars: {
+                                cars: filter(data.personWithCars.cars, c => {
+                                    return c.id !== updateCar.id
+                                })
+                            }
                         }
                     })
                 }

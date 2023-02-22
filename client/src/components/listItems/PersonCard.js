@@ -4,6 +4,7 @@ import RemovePerson from "../buttons/RemovePerson"
 import { useState } from "react"
 import UpdatePerson from "../forms/UpdatePerson"
 import Cars from "../lists/Cars"
+import { Link } from "react-router-dom"
 
 const getStyles = () => ({
     card: {
@@ -54,6 +55,7 @@ const PersonCard = props => {
                 title={`${firstName} ${lastName}`}
                 >
                     <Cars personId={id} />
+                    <Link to={`people/${id}`}>Learn More</Link>
                 </Card>
             )}
             

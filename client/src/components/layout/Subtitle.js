@@ -1,3 +1,5 @@
+import { Divider } from "antd"
+
 const getStyles = () => ({
     title: {
         fontSize: 22,
@@ -11,7 +13,7 @@ const getStyles = () => ({
 const Subtitle = ({ msg }) => {
     const styles = getStyles()
 
-    return <h2 style={styles.title}>{msg}</h2>
+    return <Divider style={styles.title}>{msg}</Divider>
 }
 
 export default Subtitle

@@ -10,6 +10,33 @@ export const GET_PEOPLE = gql`
     }
 }
 `
+export const GET_PERSON = gql`
+    query GetPerson($id: String!){
+        person(id: $id) {
+            id
+            firstName
+            lastName
+        }
+    }
+`
+
+export const GET_PERSON_WITH_CARS = gql`
+    query GetPersonWithCars($id: String!){
+        personWithCars(id: $id) {
+            id
+            firstName
+            lastName
+            cars {
+                id
+                year
+                make
+                model
+                price
+                personId
+            }
+        }
+    }
+`
 
 export const ADD_PERSON = gql`
     mutation AddPerson($id: String!, $firstName: String!, $lastName: String!){
