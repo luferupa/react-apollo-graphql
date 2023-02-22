@@ -51,9 +51,8 @@ const PersonCard = props => {
                     <EditOutlined key='edit' onClick={handleButtonClick} />,
                     <RemovePerson id={id} />
                 ]}
+                title={`${firstName} ${lastName}`}
                 >
-                    {firstName} {lastName}
-
                     <Cars personId={id} />
                 </Card>
             )}

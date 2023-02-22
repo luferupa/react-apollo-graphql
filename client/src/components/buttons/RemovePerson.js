@@ -1,6 +1,6 @@
 import { DeleteOutlined } from "@ant-design/icons"
 import { useMutation } from "@apollo/client"
-import { GET_PEOPLE, REMOVE_PERSON } from "../../queries"
+import { GET_PEOPLE, REMOVE_PERSON, REMOVE_PERSON_CARS } from "../../queries"
 
 import filter from 'lodash.filter'
 
@@ -19,6 +19,8 @@ const RemovePerson = ({ id }) => {
         }
     })
 
+    const [removePersonCars] = useMutation(REMOVE_PERSON_CARS)
+
     const handleButtonClick= () => {
         let result = window.confirm('Are you sure you want to delete this person?')
 
@@ -26,6 +28,11 @@ const RemovePerson = ({ id }) => {
             removePerson({
                 variables: {
                     id
+                }
+            })
+            removePersonCars({
+                variables: {
+                    personId: id
                 }
             })
         }

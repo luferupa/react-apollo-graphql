@@ -19,6 +19,10 @@ const People = () => {
     if(loading) return 'Loading...'
     if(error) return `Error! ${error.message}`
 
+    if(!data.people || data.people.length<=0){
+        return (<></>)
+    }
+
     return (
         <div className="people-list-container">
             <Subtitle msg='Records' />

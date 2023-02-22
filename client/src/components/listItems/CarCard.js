@@ -61,13 +61,13 @@ const CarCard = props => {
             />)
             : (
                 <Card style={styles.card}
+                type='inner'
                 actions= {[
                     <EditOutlined key='edit' onClick={handleButtonClick} />,
                     <RemoveCar id={id} personId={personId} />
                 ]}
-                >
-                    {year} {make} {model} {'->'} {price}
-                </Card>
+                title={`${year} ${make} ${model} -> ${price}`}
+                />
             )}
             
         </div>

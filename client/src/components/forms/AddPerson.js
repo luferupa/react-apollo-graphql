@@ -6,7 +6,7 @@ import { ADD_PERSON, GET_PEOPLE } from '../../queries'
 import Subtitle from '../layout/Subtitle'
 
 const AddPerson = () => {
-    const [id] = useState(uuidv4())
+    let [id] = useState(uuidv4())
     const [addPerson] = useMutation(ADD_PERSON)
     const [form] = Form.useForm()
     const [, forceUpdate] = useState()
@@ -17,6 +17,7 @@ const AddPerson = () => {
 
     const onFinish = values => {
         const { firstName, lastName } = values
+        id = uuidv4()
 
         addPerson({
             variables:{
@@ -35,6 +36,9 @@ const AddPerson = () => {
                 })
             }
         })
+
+        window.alert(`${firstName} ${lastName} was added`)
+        form.resetFields()
 
     }
 

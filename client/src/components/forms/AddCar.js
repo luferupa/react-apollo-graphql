@@ -6,7 +6,7 @@ import { ADD_CAR, GET_PEOPLE, GET_PERSON_CARS } from '../../queries'
 import Subtitle from '../layout/Subtitle'
 
 const AddCar = () => {
-    const [id] = useState(uuidv4())
+    let [id] = useState(uuidv4())
     const [addCar] = useMutation(ADD_CAR)
     const [form] = Form.useForm()
     const [, forceUpdate] = useState()
@@ -17,6 +17,7 @@ const AddCar = () => {
 
     const onFinish = values => {
         const { year, make, model, price, personId } = values
+        id = uuidv4()
 
         addCar({
             variables:{
@@ -40,6 +41,9 @@ const AddCar = () => {
             }
         })
 
+        window.alert(`${year} ${make} ${model} was added`)
+        form.resetFields()
+
     }
 
     const {loading, error, data } = useQuery(GET_PEOPLE)
@@ -47,10 +51,17 @@ const AddCar = () => {
     if(loading) return 'Loading...'
     if(error) return `Error! ${error.message}`
 
+    if(!data.people || data.people.length<=0){
+        return (<></>)
+    }
+
     return (
         <div className='add-car-container'>
             <Subtitle msg='Add Car' />
-            <Form name='add-car-form' form={form} layout='inline' size='large' style={{ marginBottom: '40px'}} onFinish= { onFinish }>
+            <Form name='add-car-form' form={form} layout='inline' size='large' style={{ marginBottom: '40px', gap: '0.5rem'}} 
+            onFinish= { onFinish }
+            initialValues={{ price: '$ '}}
+            >
                 <Form.Item name='year' label='Year'
                 rules={[{ required: true, message: 'Please input the year'}]}>
                     <Input placeholder='Year' />
@@ -65,7 +76,7 @@ const AddCar = () => {
                 </Form.Item>
                 <Form.Item name='price' label='Price'
                 rules={[{ required: true, message: 'Please input the price'}]}>
-                    <Input placeholder='Price' value={'$'} />
+                    <Input placeholder='Price' />
                 </Form.Item>
                 <Form.Item name='personId' label='Person'
                 rules={[{ required: true, message: 'Please select a person'}]}>

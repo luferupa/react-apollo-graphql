@@ -6,7 +6,8 @@ import CarCard from "../listItems/CarCard"
 const getStyles = () => ({
     list: {
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        paddingTop: '2rem'
     }
 })
 

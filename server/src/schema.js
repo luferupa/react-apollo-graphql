@@ -126,6 +126,7 @@ const typeDefs = gql`
         updateCar(id: String!, year: String, make: String, model: String, price: String, personId: String): Car
         removePerson(id: String!): Person
         removeCar(id: String!): Car
+        removePersonCars(personId: String!): [Car]
     }
 `
 
@@ -211,6 +212,20 @@ const resolvers = {
             })
 
             return removedCar
+        },
+        removePersonCars: (root, args) => {
+            const removedCars = filter(carsArr, { personId: args.personId })
+
+            if(!removedCars || removedCars.length < 1) throw new Error(`Couldn't find car with id ${args.id}`)
+
+            removedCars.forEach((car) => {
+              remove(carsArr, c => {
+                return c.id === car.id
+              })
+            })
+            
+
+            return removedCars
         }
     }
 }
