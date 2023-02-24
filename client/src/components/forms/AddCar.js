@@ -2,7 +2,7 @@ import {v4 as uuidv4} from 'uuid'
 import {Button, Form, Input, Select} from 'antd'
 import { useEffect, useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
-import { ADD_CAR, GET_PEOPLE, GET_PERSON_CARS } from '../../queries'
+import { ADD_CAR, GET_PEOPLE, GET_PERSON_CARS, GET_PERSON_WITH_CARS } from '../../queries'
 import Subtitle from '../layout/Subtitle'
 
 const AddCar = () => {
@@ -29,7 +29,7 @@ const AddCar = () => {
                 personId
             },
             update: (cache, {data: {addCar}}) => {
-                const data = cache.readQuery({query: GET_PERSON_CARS, variables: { personId: personId }})
+                let data = cache.readQuery({query: GET_PERSON_CARS, variables: { personId: personId }})
                 cache.writeQuery({
                     query: GET_PERSON_CARS,
                     variables: { personId },
@@ -38,6 +38,23 @@ const AddCar = () => {
                         personCars: [...data.personCars, addCar]
                     }
                 })
+
+                //update the data for the detailed section
+                data = cache.readQuery({query: GET_PERSON_WITH_CARS, variables: { id: personId }})
+                if(data && data.personWithCars){
+                    cache.writeQuery({
+                    query: GET_PERSON_WITH_CARS,
+                    variables: { id: personId },
+                    data: {
+                        ...data,
+                        personWithCars: {
+                            ...data.personWithCars,
+                            cars: [...data.personWithCars.cars, addCar]
+                        }
+                        
+                    }
+                    })
+                }
             }
         })
 

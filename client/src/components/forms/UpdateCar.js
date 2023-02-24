@@ -47,7 +47,7 @@ const UpdateCar = props => {
 
                 //update the data for the detailed section
                 data = cache.readQuery({query: GET_PERSON_WITH_CARS, variables: { id: personId }})
-                if(data){
+                if(data && data.personWithCars){
                     cache.writeQuery({
                     query: GET_PERSON_WITH_CARS,
                     variables: { id: personId },
@@ -80,18 +80,20 @@ const UpdateCar = props => {
                 //delete the car from the detailed person section if it changed the owner
                 if(personId!==originalPersonId){
                     data = cache.readQuery({query: GET_PERSON_WITH_CARS, variables: { id: originalPersonId }})
-                    cache.writeQuery({
-                        query: GET_PERSON_WITH_CARS,
-                        variables: { id: originalPersonId },
-                        data: {
-                            ...data,
-                            personWithCars: {
-                                cars: filter(data.personWithCars.cars, c => {
-                                    return c.id !== updateCar.id
-                                })
+                    if(data && data.personWithCars){
+                        cache.writeQuery({
+                            query: GET_PERSON_WITH_CARS,
+                            variables: { id: originalPersonId },
+                            data: {
+                                ...data,
+                                personWithCars: {
+                                    cars: filter(data.personWithCars.cars, c => {
+                                        return c.id !== updateCar.id
+                                    })
+                                }
                             }
-                        }
-                    })
+                        })
+                    }
                 }
                 
             }

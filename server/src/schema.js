@@ -154,8 +154,6 @@ const resolvers = {
         personWithCars: (root, args) => {
           const personObj = find(peopleArr, { id: args.id })
           const personCars = filter(carsArr, { personId: args.id })
-          console.log('person',personObj)
-          console.log('cars', personCars)
           return { ...personObj, cars: personCars }
         }
     },

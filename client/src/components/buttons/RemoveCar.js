@@ -21,6 +21,7 @@ const RemoveCar = ({ id, personId }) => {
 
             //delete the car from the detailed person section if it changed the owner
             data = cache.readQuery({query: GET_PERSON_WITH_CARS, variables: { id: personId }})
+            if(data && data.personWithCars){
                 cache.writeQuery({
                     query: GET_PERSON_WITH_CARS,
                     variables: { id: personId },
@@ -33,6 +34,7 @@ const RemoveCar = ({ id, personId }) => {
                         }
                     }
                 })
+            }
             
         }
     })
